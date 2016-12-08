@@ -27,10 +27,13 @@
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Stopwatch;
 
 public class PuzzleChecker {
 
     public static void main(String[] args) {
+
+        Stopwatch sw = new Stopwatch();
 
         // for each command-line argument
         for (String filename : args) {
@@ -59,5 +62,8 @@ public class PuzzleChecker {
                     StdOut.println(board);
             }
         }
+        StdOut.println("Total running count = " + Board.count);
+        StdOut.println("Total running countPublic = " + Board.countPublic);
+        StdOut.println("Total running time = " + sw.elapsedTime() + "s");
     }
 }

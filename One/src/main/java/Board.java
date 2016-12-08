@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       12/4/2016
- *  Last updated:  12/4/2016
+ *  Last updated:  12/6/2016
  *
  *  Compilation:   javac Board.java
  *  Execution:     java Board
@@ -16,13 +16,16 @@
  *
  *----------------------------------------------------------------*/
 
-import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.Stack;
 
 public class Board {
-    private int[][] tiles;
-    private int blankX = -1;    // position of blank block
-    private int blankY = -1;    // position of blank block
+    private int[] tiles;
+    private int n;                     // grid n x n
+    private int blankPos = -1;         // position of blank block
+    private int disHamming = -1;       // hamming distance
+    private int disManhattan = -1;     // manhattan distance
+    public static int count = 0;
+    public static int countPublic = 0;
 
     /**
      * Construct a board from an n-by-n array of blocks
@@ -30,31 +33,73 @@ public class Board {
      * @param blocks {int[][]}
      */
     public Board(int[][] blocks) {
-        if (blocks == null)
-            throw new java.lang.NullPointerException();
+        count++;
+        countPublic++;
+        if (blocks == null) throw new java.lang.NullPointerException();
 
-        int n = blocks.length;
-        int max = n * n - 1;
-        this.tiles = new int[n][n];
+        n = blocks.length;
+        int len = n * n;
+        tiles = new int[len];
 
         for (int i = 0; i < n; i++) {
             int[] row = blocks[i];
             if (row == null || row.length != n)
                 throw new java.lang.IllegalArgumentException();
 
-            int[] tileRow = this.tiles[i];
             for (int j = 0; j < n; j++) {
                 int value = row[j];
-                if (value < 0 || value > max) throw new java.lang.IllegalArgumentException();
-                if (value == 0) {
-                    blankX = i;
-                    blankY = j;
-                }
-                tileRow[j] = value;
+                int pos = xyTo1D(i, j);
+                if (value < 0 || value >= len) throw new java.lang.IllegalArgumentException();
+                if (value == 0) blankPos = pos;
+                tiles[pos] = value;
             }
         }
-        // check whether blank block exists
-        if (blankX == -1) throw new java.lang.IllegalArgumentException();
+        calDis();
+    }
+
+    /**
+     * Get copy of tiles
+     * @param arr {int[]}
+     * @return {int[]}
+     */
+    private int[] tilesCopy(int[] arr) {
+        count++;
+        int len = arr.length;
+        int[] copy = new int[len];
+        for (int i = 0; i < len; i++) {
+            copy[i] = arr[i];
+        }
+        return copy;
+    }
+
+    /**
+     * Create copy of board
+     * @param arr {int[]} tiles array
+     * @param blank {int} position of blank block
+     * @param pos1 {int} position to exchange
+     * @param pos2 {int} position to exchange
+     * @return {Board}
+     */
+    private Board boardCopy(int[] arr, int blank, int pos1, int pos2) {
+        count++;
+        int disH = disHamming + calDisHamming(arr[pos2], pos1) + calDisHamming(arr[pos1], pos2)
+                - calDisHamming(arr[pos1], pos1) - calDisHamming(arr[pos2], pos2);
+        int disM = disManhattan + calDisManhattan(arr[pos2], pos1) + calDisManhattan(arr[pos1], pos2)
+                - calDisManhattan(arr[pos1], pos1) - calDisManhattan(arr[pos2], pos2);
+        int[] copy = tilesCopy(arr);
+        exch(copy, pos1, pos2);
+        Board b = new Board(new int[0][0]);
+        b.tiles = copy;
+        b.n = n;
+        b.blankPos = blank;
+        b.disHamming = disH;
+        b.disManhattan = disM;
+        return b;
+    }
+
+    private int xyTo1D(int i, int j) {
+        count++;
+        return i * n + j;
     }
 
     /**
@@ -62,22 +107,51 @@ public class Board {
      * @return {int}
      */
     public int dimension() {
-        return tiles.length;
+        count++;
+        countPublic++;
+        return n;
     }
 
     /**
      * Distance between actual position and target position
-     * @param size {int}
+     */
+    private void calDis() {
+        count++;
+        disHamming = 0;
+        disManhattan = 0;
+        for (int i = 0, len = tiles.length; i < len; i++) {
+            int value = tiles[i];
+            if (value == 0) continue;
+            disHamming += calDisHamming(value, i);
+            disManhattan += calDisManhattan(value, i);
+        }
+    }
+
+    /**
+     * Distance between actual position and target position
      * @param value {int}
-     * @param i {int}
-     * @param j {int}
+     * @param idx {int}
      * @return {int}
      */
-    private int disManhattan(int value, int size, int i, int j) {
+    private int calDisHamming(int value, int idx) {
+        count++;
+        if (value == 0) return 0;
+        return (value != idx + 1) ? 1 : 0;
+    }
+
+    /**
+     * Distance between actual position and target position
+     * @param value {int}
+     * @param idx {int}
+     * @return {int}
+     */
+    private int calDisManhattan(int value, int idx) {
+        count++;
+        if (value == 0) return 0;
         value--;
-        int expectedRow = value / size;
-        int expectedCol = value % size;
-        return Math.abs(expectedRow - i) + Math.abs(expectedCol - j);
+        int expectedRow = value / n;
+        int expectedCol = value % n;
+        return Math.abs(expectedRow - idx / n) + Math.abs(expectedCol - idx % n);
     }
 
     /**
@@ -85,20 +159,9 @@ public class Board {
      * @return {int}
      */
     public int hamming() {
-        int n = tiles.length;
-        int dis = 0, startIdx;
-        int[] row;
-
-        for (int i = 0; i < n; i++) {
-            row = tiles[i];
-            startIdx = i * n;
-
-            for (int j = 0; j < n; j++) {
-                if (row[j] == 0) continue;
-                if (row[j] != startIdx + j + 1) dis++;
-            }
-        }
-        return dis;
+        count++;
+        countPublic++;
+        return disHamming;
     }
 
     /**
@@ -106,18 +169,9 @@ public class Board {
      * @return {int}
      */
     public int manhattan() {
-        int n = tiles.length;
-        int dis = 0;
-        int[] row;
-
-        for (int i = 0; i < n; i++) {
-            row = tiles[i];
-            for (int j = 0; j < n; j++) {
-                if (row[j] == 0) continue;
-                dis += disManhattan(row[j], n, i, j);
-            }
-        }
-        return dis;
+        count++;
+        countPublic++;
+        return disManhattan;
     }
 
     /**
@@ -125,28 +179,22 @@ public class Board {
      * @return {boolean}
      */
     public boolean isGoal() {
-        return hamming() == 0;
+        count++;
+        countPublic++;
+        return disHamming == 0;
     }
 
     /**
      * Exchange specific pair of blocks
-     * @param i1 {int}
-     * @param j1 {int}
-     * @param i2 {int}
-     * @param j2 {int}
+     * @param arr {int[]}
+     * @param pos1 {int}
+     * @param pos2 {int}
      */
-    private void exch(int i1, int j1, int i2, int j2) {
-        int tmp = tiles[i1][j1];
-        tiles[i1][j1] = tiles[i2][j2];
-        tiles[i2][j2] = tmp;
-        if (tmp == 0) {
-            blankX = i2;
-            blankY = j2;
-        }
-        else if (tiles[i1][j1] == 0) {
-            blankX = i1;
-            blankY = j1;
-        }
+    private void exch(int[] arr, int pos1, int pos2) {
+        count++;
+        int tmp = arr[pos1];
+        arr[pos1] = arr[pos2];
+        arr[pos2] = tmp;
     }
 
     /**
@@ -155,17 +203,16 @@ public class Board {
      * @return {int}
      */
     public Board twin() {
-        Board b = new Board(tiles);
-        int n = tiles.length;
-        int i1, j1, i2, j2;
-        do {
-            i1 = StdRandom.uniform(0, n);
-            j1 = StdRandom.uniform(0, n);
-            i2 = StdRandom.uniform(0, n);
-            j2 = StdRandom.uniform(0, n);
-        } while ((i1 == i2 && j1 == j2) || tiles[i1][j1] == 0 || tiles[i2][j2] == 0);
-        b.exch(i1, j1, i2, j2);
-        return b;
+        count++;
+        countPublic++;
+        int len = tiles.length;
+        int[] pos = new int[2];
+
+        for (int i = 0, j = 0; i < 2 && j < len; j++) {
+            if (tiles[j] != 0) pos[i++] = j;
+        }
+
+        return boardCopy(tiles, blankPos, pos[0], pos[1]);
     }
 
     /**
@@ -174,7 +221,24 @@ public class Board {
      * @return {boolean}
      */
     public boolean equals(Object y) {
-        return (y != null) && toString().equals(y.toString());
+        count++;
+        countPublic++;
+        if (y == this) return true;
+        if (y == null) return false;
+        if (y.getClass() != this.getClass()) return false;
+
+        Board that = (Board) y;
+        if (this.blankPos != that.blankPos) return false;
+        if (disHamming != that.disHamming) return false;
+        if (disManhattan != that.disManhattan) return false;
+
+        int[] tiles1 = this.tiles;
+        int[] tiles2 = that.tiles;
+        for (int i = 0, len = tiles1.length; i < len; i++) {
+            if (tiles1[i] != tiles2[i]) return false;
+        }
+
+        return true;
     }
 
     /**
@@ -182,12 +246,14 @@ public class Board {
      * @return {Iterable<Board>}
      */
     public Iterable<Board> neighbors() {
+        count++;
+        countPublic++;
         Stack<Board> st = new Stack<Board>();
 
-        addNeighbor(st, blankX - 1, blankY);
-        addNeighbor(st, blankX + 1, blankY);
-        addNeighbor(st, blankX, blankY - 1);
-        addNeighbor(st, blankX, blankY + 1);
+        addNeighbor(st, blankPos - n);
+        addNeighbor(st, blankPos + n);
+        if (blankPos % n != 0) addNeighbor(st, blankPos - 1);
+        if ((blankPos + 1) % n != 0) addNeighbor(st, blankPos + 1);
 
         return st;
     }
@@ -195,15 +261,12 @@ public class Board {
     /**
      * Add neighbor board
      * @param st {Stack<Board>}
-     * @param i {int}
-     * @param j {int}
+     * @param pos {int}
      */
-    private void addNeighbor(Stack<Board> st, int i, int j) {
-        int n = tiles.length;
-        if (i < 0 || i >= n || j < 0 || j >= n) return;
-        Board b = new Board(tiles);
-        b.exch(blankX, blankY, i, j); // exchange values
-        st.push(b);
+    private void addNeighbor(Stack<Board> st, int pos) {
+        count++;
+        if (pos < 0 || pos >= tiles.length) return;
+        st.push(boardCopy(tiles, pos, blankPos, pos));
     }
 
     /**
@@ -211,12 +274,13 @@ public class Board {
      * @return {String}
      */
     public String toString() {
+        count++;
+        countPublic++;
         StringBuilder s = new StringBuilder();
-        int n = tiles.length;
         s.append(n + "\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                s.append(String.format("%2d ", tiles[i][j]));
+                s.append(String.format("%2d ", tiles[xyTo1D(i, j)]));
             }
             s.append("\n");
         }
