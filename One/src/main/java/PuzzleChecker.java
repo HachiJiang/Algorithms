@@ -62,8 +62,8 @@ public class PuzzleChecker {
                     StdOut.println(board);
             }
         }
-        StdOut.println("Total running count = " + Board.count);
-        StdOut.println("Total running countPublic = " + Board.countPublic);
+//        StdOut.println("Total running insert = " + Solver.countIns);
+//        StdOut.println("Total running del = " + Solver.countDel);
         StdOut.println("Total running time = " + sw.elapsedTime() + "s");
     }
 }

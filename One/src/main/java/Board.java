@@ -24,8 +24,6 @@ public class Board {
     private int blankPos = -1;         // position of blank block
     private int disHamming = -1;       // hamming distance
     private int disManhattan = -1;     // manhattan distance
-    public static int count = 0;
-    public static int countPublic = 0;
 
     /**
      * Construct a board from an n-by-n array of blocks
@@ -33,8 +31,6 @@ public class Board {
      * @param blocks {int[][]}
      */
     public Board(int[][] blocks) {
-        count++;
-        countPublic++;
         if (blocks == null) throw new java.lang.NullPointerException();
 
         n = blocks.length;
@@ -63,7 +59,6 @@ public class Board {
      * @return {int[]}
      */
     private int[] tilesCopy(int[] arr) {
-        count++;
         int len = arr.length;
         int[] copy = new int[len];
         for (int i = 0; i < len; i++) {
@@ -74,20 +69,21 @@ public class Board {
 
     /**
      * Create copy of board
-     * @param arr {int[]} tiles array
      * @param blank {int} position of blank block
      * @param pos1 {int} position to exchange
      * @param pos2 {int} position to exchange
      * @return {Board}
      */
-    private Board boardCopy(int[] arr, int blank, int pos1, int pos2) {
-        count++;
-        int disH = disHamming + calDisHamming(arr[pos2], pos1) + calDisHamming(arr[pos1], pos2)
-                - calDisHamming(arr[pos1], pos1) - calDisHamming(arr[pos2], pos2);
-        int disM = disManhattan + calDisManhattan(arr[pos2], pos1) + calDisManhattan(arr[pos1], pos2)
-                - calDisManhattan(arr[pos1], pos1) - calDisManhattan(arr[pos2], pos2);
-        int[] copy = tilesCopy(arr);
+    private Board boardCopy(int blank, int pos1, int pos2) {
+        int[] copy = tilesCopy(tiles);
+        int val1 = copy[pos1];
+        int val2 = copy[pos2];
+        int disH = disHamming + calDisHamming(val2, pos1) + calDisHamming(val1, pos2)
+                - calDisHamming(val1, pos1) - calDisHamming(val2, pos2);
+        int disM = disManhattan + calDisManhattan(val2, pos1) + calDisManhattan(val1, pos2)
+                - calDisManhattan(val1, pos1) - calDisManhattan(val2, pos2);
         exch(copy, pos1, pos2);
+
         Board b = new Board(new int[0][0]);
         b.tiles = copy;
         b.n = n;
@@ -98,7 +94,6 @@ public class Board {
     }
 
     private int xyTo1D(int i, int j) {
-        count++;
         return i * n + j;
     }
 
@@ -107,8 +102,6 @@ public class Board {
      * @return {int}
      */
     public int dimension() {
-        count++;
-        countPublic++;
         return n;
     }
 
@@ -116,7 +109,6 @@ public class Board {
      * Distance between actual position and target position
      */
     private void calDis() {
-        count++;
         disHamming = 0;
         disManhattan = 0;
         for (int i = 0, len = tiles.length; i < len; i++) {
@@ -134,7 +126,6 @@ public class Board {
      * @return {int}
      */
     private int calDisHamming(int value, int idx) {
-        count++;
         if (value == 0) return 0;
         return (value != idx + 1) ? 1 : 0;
     }
@@ -146,7 +137,6 @@ public class Board {
      * @return {int}
      */
     private int calDisManhattan(int value, int idx) {
-        count++;
         if (value == 0) return 0;
         value--;
         int expectedRow = value / n;
@@ -159,8 +149,6 @@ public class Board {
      * @return {int}
      */
     public int hamming() {
-        count++;
-        countPublic++;
         return disHamming;
     }
 
@@ -169,8 +157,6 @@ public class Board {
      * @return {int}
      */
     public int manhattan() {
-        count++;
-        countPublic++;
         return disManhattan;
     }
 
@@ -179,8 +165,6 @@ public class Board {
      * @return {boolean}
      */
     public boolean isGoal() {
-        count++;
-        countPublic++;
         return disHamming == 0;
     }
 
@@ -191,7 +175,6 @@ public class Board {
      * @param pos2 {int}
      */
     private void exch(int[] arr, int pos1, int pos2) {
-        count++;
         int tmp = arr[pos1];
         arr[pos1] = arr[pos2];
         arr[pos2] = tmp;
@@ -203,16 +186,34 @@ public class Board {
      * @return {int}
      */
     public Board twin() {
-        count++;
-        countPublic++;
         int len = tiles.length;
-        int[] pos = new int[2];
+        int[] pos = new int[]{-1, -1};
 
-        for (int i = 0, j = 0; i < 2 && j < len; j++) {
-            if (tiles[j] != 0) pos[i++] = j;
+        for (int i = 0; i < len; i++) {
+            int value = tiles[i];
+            if (value == 0 || value == i + 1) continue; // skip for blank block or block in correct position
+            value--;
+            if (tiles[value] == i + 1) {
+                int expectedRow = value / n;
+                int expectedCol = value % n;
+                int actualRow = i / n;
+                int actualCol = i % n;
+
+                if (expectedRow == actualRow || expectedCol == actualCol) {
+                    pos[0] = value;
+                    pos[1] = i;
+                    break;
+                }
+            }
         }
 
-        return boardCopy(tiles, blankPos, pos[0], pos[1]);
+        if (pos[0] == -1) {
+            for (int i = 0, j = 0; i < 2 && j < len; j++) {
+                if (tiles[j] != 0) pos[i++] = j;
+            }
+        }
+
+        return boardCopy(blankPos, pos[0], pos[1]);
     }
 
     /**
@@ -221,8 +222,6 @@ public class Board {
      * @return {boolean}
      */
     public boolean equals(Object y) {
-        count++;
-        countPublic++;
         if (y == this) return true;
         if (y == null) return false;
         if (y.getClass() != this.getClass()) return false;
@@ -246,8 +245,6 @@ public class Board {
      * @return {Iterable<Board>}
      */
     public Iterable<Board> neighbors() {
-        count++;
-        countPublic++;
         Stack<Board> st = new Stack<Board>();
 
         addNeighbor(st, blankPos - n);
@@ -264,9 +261,8 @@ public class Board {
      * @param pos {int}
      */
     private void addNeighbor(Stack<Board> st, int pos) {
-        count++;
         if (pos < 0 || pos >= tiles.length) return;
-        st.push(boardCopy(tiles, pos, blankPos, pos));
+        st.push(boardCopy(pos, blankPos, pos));
     }
 
     /**
@@ -274,8 +270,6 @@ public class Board {
      * @return {String}
      */
     public String toString() {
-        count++;
-        countPublic++;
         StringBuilder s = new StringBuilder();
         s.append(n + "\n");
         for (int i = 0; i < n; i++) {

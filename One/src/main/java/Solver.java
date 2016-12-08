@@ -25,18 +25,19 @@ public class Solver {
         if (initial == null) throw new java.lang.NullPointerException();
 
         MinPQ<SearchNode> pq = new MinPQ<SearchNode>();          // the priority queue
-        Board b = initial.twin();
-        pq.insert(new SearchNode(initial, null, initial.manhattan(), 0));
-        pq.insert(new SearchNode(b, null, b.manhattan(), 0));
+        pq.insert(new SearchNode(initial, null,  0));
+        pq.insert(new SearchNode(initial.twin(), null, 0));
         SearchNode nd = pq.delMin();
         int moves;
 
-        b = nd.board;
+        Board b = nd.board;
+        Board bPrev = null;
         while (!b.isGoal()) {
             moves = nd.moves + 1;
+            if (nd.prev != null) bPrev = nd.prev.board;
             for (Board nb: b.neighbors()) {
-                if (nb.equals(b)) continue; // b is previous board of nb
-                pq.insert(new SearchNode(nb, nd, nb.manhattan(), moves));
+                if (bPrev != null && nb.equals(bPrev)) continue; // b is previous board of nb
+                pq.insert(new SearchNode(nb, nd, moves));
             }
 
             nd = pq.delMin();
@@ -57,13 +58,16 @@ public class Solver {
     private class SearchNode implements Comparable<SearchNode> {
         private Board board;
         private SearchNode prev;  // previous search node
+        private int priority;     // distance + moves
         private int distance;     // distance
         private int moves;        // moves
 
-        public SearchNode(Board b, SearchNode prev, int dis, int m) {
+        public SearchNode(Board b, SearchNode prev, int m) {
             this.board = b;
             this.prev = prev;
+            int dis = b.manhattan();
             this.distance = dis;
+            this.priority = dis + m;
             this.moves = m;
         }
 
@@ -73,8 +77,8 @@ public class Solver {
          * @return {int}
          */
         public int compareTo(SearchNode that) {
-            int p1 = this.distance + this.moves;
-            int p2 = that.distance + that.moves;
+            int p1 = this.priority;
+            int p2 = that.priority;
             if (p1 < p2) return -1;
             else if (p1 == p2) {
                 int p3 = this.distance;
