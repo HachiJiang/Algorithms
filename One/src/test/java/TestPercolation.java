@@ -2,6 +2,7 @@
  * Created by jianghong on 2016/11/12.
  */
 
+import com.assignment1.Percolation;
 import org.junit.Test;
 import org.junit.Assert;
 
