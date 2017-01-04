@@ -142,11 +142,18 @@ public class KdTree {
      * Check whether current subtree contains p
      * @param current {Node}
      * @param p {Point}
+     * @param splitOrientation {boolean} true: vertical splitter
      * @return {boolean}
      */
-    private boolean contains(Node current, Point2D p) {
-        return current != null && current.rect.contains(p) &&
-                (current.p.equals(p) || contains(current.lb, p) || contains(current.rt, p));
+    private boolean contains(Node current, Point2D p, boolean splitOrientation) {
+        if (current == null) return false;
+        if (current.p.equals(p)) return true;
+
+        boolean isLeft = (splitOrientation && p.x() < current.p.x()) ||
+                (!splitOrientation && p.y() < current.p.y());
+
+        if (isLeft) return contains(current.lb, p, !splitOrientation);
+        else return contains(current.rt, p, !splitOrientation);
     }
 
     /**
@@ -156,7 +163,7 @@ public class KdTree {
      */
     public boolean contains(Point2D p) {
         if (p == null) throw new java.lang.NullPointerException();
-        return contains(root, p);
+        return contains(root, p, true);
     }
 
     /**
@@ -209,7 +216,7 @@ public class KdTree {
      * @param current {Node}
      */
     private void rangeSearch(Stack<Point2D> st, RectHV rect, Node current) {
-        if (!current.rect.intersects(rect)) return;
+        if (current == null || !current.rect.intersects(rect)) return;
         if (current.lb != null) rangeSearch(st, rect, current.lb);
         if (current.rt != null) rangeSearch(st, rect, current.rt);
         if (rect.contains(current.p)) st.push(current.p);
@@ -247,8 +254,13 @@ public class KdTree {
             minDis = dis;
         }
 
-        minDis = nearestSearch(p, current.lb, nearestNode, minDis);
-        minDis = nearestSearch(p, current.rt, nearestNode, minDis);
+        if (current.lb != null && current.lb.rect.contains(p)) {
+            minDis = nearestSearch(p, current.lb, nearestNode, minDis);
+            minDis = nearestSearch(p, current.rt, nearestNode, minDis);
+        } else {
+            minDis = nearestSearch(p, current.rt, nearestNode, minDis);
+            minDis = nearestSearch(p, current.lb, nearestNode, minDis);
+        }
         return minDis;
     }
 

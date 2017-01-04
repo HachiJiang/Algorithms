@@ -3,6 +3,8 @@ import com.assignment5.PointSET;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import java.util.ArrayList;
+
+import edu.princeton.cs.algs4.RectHV;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -67,5 +69,15 @@ public class TestKdTree {
             Assert.assertTrue(kdtree.contains(p));
             Assert.assertTrue(brute.contains(p));
         }
+    }
+
+    @Test
+    public void testFreeForm() {
+        KdTree kdtree = new KdTree();
+        Iterable<Point2D> points = kdtree.range(new RectHV(0, 0.1, 0, 0.1));
+        ArrayList<Point2D> tmp = new ArrayList<Point2D>();
+        for (Point2D p: points)
+            tmp.add(p);
+        Assert.assertEquals(0, tmp.size());
     }
 }
