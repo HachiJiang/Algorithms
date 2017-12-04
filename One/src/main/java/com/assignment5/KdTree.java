@@ -141,7 +141,7 @@ public class KdTree {
     /**
      * Check whether current subtree contains p
      * @param current {Node}
-     * @param p {Point}
+     * @param p {com.assignment3.Point}
      * @param splitOrientation {boolean} true: vertical splitter
      * @return {boolean}
      */
@@ -158,7 +158,7 @@ public class KdTree {
 
     /**
      * Does the set contain point p?
-     * @param p {Point}
+     * @param p {com.assignment3.Point}
      * @return {boolean}
      */
     public boolean contains(Point2D p) {

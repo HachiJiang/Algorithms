@@ -1,10 +1,12 @@
+package com.assignment2;
+
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       11/19/2016
  *  Last updated:  11/19/2016
  *
- *  Compilation:   javac Subset.java
- *  Execution:     java Subset
+ *  Compilation:   javac com.assignment2.Subset.java
+ *  Execution:     java com.assignment2.Subset
  *
  *  Client program
  *

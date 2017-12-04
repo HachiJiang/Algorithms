@@ -1,12 +1,14 @@
+package com.assignment3;
+
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       11/23/2016
  *  Last updated:  11/23/2016
  *
- *  Compilation:   javac Point.java
- *  Execution:     java Point
+ *  Compilation:   javac com.assignment3.Point.java
+ *  Execution:     java com.assignment3.Point
  *
- *  Point in plane
+ *  com.assignment3.Point in plane
  *
  *
  *----------------------------------------------------------------*/
@@ -37,7 +39,7 @@ public class Point implements Comparable<Point> {
 
     /**
      * Draws the line segment from this point to that point
-     * @param that {Point} end point of line
+     * @param that {com.assignment3.Point} end point of line
      */
     public void drawTo(Point that) {
         StdDraw.line(this.x, this.y, that.x, that.y);
@@ -55,7 +57,7 @@ public class Point implements Comparable<Point> {
      * Compares two points by y-coordinate, breaking ties by x-coordinate.
      * Formally, the invoking point (x0, y0) is less than the argument point
      * (x1, y1) if and only if either y0 < y1 or if y0 = y1 and x0 < x1.
-     * @param that {Point} point to compare
+     * @param that {com.assignment3.Point} point to compare
      * @return {int}
      */
     public int compareTo(Point that) {
@@ -71,7 +73,7 @@ public class Point implements Comparable<Point> {
      * +0.0 if the line segment connecting the two points is horizontal;
      * Double.POSITIVE_INFINITY if the line segment is vertical;
      * and Double.NEGATIVE_INFINITY if (x0, y0) and (x1, y1) are equal.
-     * @param that {Point} end point of line
+     * @param that {com.assignment3.Point} end point of line
      * @return {double}
      */
     public double slopeTo(Point that) {
@@ -96,8 +98,8 @@ public class Point implements Comparable<Point> {
 
         /**
          * Compare two points
-         * @param p1 {Point}
-         * @param p2 {Point}
+         * @param p1 {com.assignment3.Point}
+         * @param p2 {com.assignment3.Point}
          * @return {int}
          */
         public int compare(Point p1, Point p2) {

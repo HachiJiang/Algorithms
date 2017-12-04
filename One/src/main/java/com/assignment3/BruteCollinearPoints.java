@@ -1,10 +1,12 @@
+package com.assignment3;
+
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       11/23/2016
  *  Last updated:  11/25/2016
  *
- *  Compilation:   javac BruteCollinearPoints.java
- *  Execution:     java BruteCollinearPoints
+ *  Compilation:   javac com.assignment3.BruteCollinearPoints.java
+ *  Execution:     java com.assignment3.BruteCollinearPoints
  *
  *  Examines 4 points at a time and checks whether they all lie on the same line segment
  *  returning all such line segments
@@ -22,7 +24,7 @@ public class BruteCollinearPoints {
 
     /**
      * Finds all line segments containing 4 points
-     * @param points {Point[]}
+     * @param points {com.assignment3.Point[]}
      */
     public BruteCollinearPoints(Point[] points) {
         checkInput(points);
@@ -51,7 +53,7 @@ public class BruteCollinearPoints {
 
     /**
      * Check input
-     * @param points {Point[]}
+     * @param points {com.assignment3.Point[]}
      */
     private void checkInput(Point[] points) {
         if (points == null) throw new java.lang.NullPointerException();
@@ -74,7 +76,7 @@ public class BruteCollinearPoints {
 
     /**
      * Merge collinear points to reference line seg
-     * @param points {Point[]}
+     * @param points {com.assignment3.Point[]}
      * @param refIdx {int}
      * @param cpt {Comparator}
      * @param pointsInLine {ArrayList}
@@ -99,7 +101,7 @@ public class BruteCollinearPoints {
     /**
      * Create line segment based on input points
      * @param points {ArrayList()}
-     * @return {LineSegment}
+     * @return {com.assignment3.LineSegment}
      */
     private LineSegment createLine(ArrayList<Point> points) {
         Point start = points.get(0);
@@ -125,7 +127,7 @@ public class BruteCollinearPoints {
 
     /**
      * The line segments
-     * @return {LineSegment[]}
+     * @return {com.assignment3.LineSegment[]}
      */
     public LineSegment[] segments() {
         if (segs == null) {

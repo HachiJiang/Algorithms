@@ -2,6 +2,8 @@
  * Created by jianghong on 2016/12/4.
  */
 
+import com.assignment4.Board;
+import com.assignment4.Solver;
 import org.junit.Assert;
 import org.junit.Test;
 

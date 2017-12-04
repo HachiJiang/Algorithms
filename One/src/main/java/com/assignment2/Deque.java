@@ -1,10 +1,12 @@
+package com.assignment2;
+
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       11/17/2016
  *  Last updated:  11/17/2016
  *
- *  Compilation:   javac Deque.java
- *  Execution:     java Deque
+ *  Compilation:   javac com.assignment2.Deque.java
+ *  Execution:     java com.assignment2.Deque
  *
  *  Model a double-ended queue
  *

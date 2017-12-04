@@ -2,8 +2,9 @@
  * Created by jianghong on 2016/11/23.
  */
 
+import com.assignment3.BruteCollinearPoints;
+import com.assignment3.Point;
 import org.junit.Assert;
-import org.junit.After;
 import org.junit.Test;
 
 public class TestBruteCollinearPoints {

@@ -2,10 +2,10 @@
  * Created by jianghong on 2016/11/17.
  */
 
+import com.assignment2.RandomizedQueue;
 import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
 import org.junit.Assert;
-import org.junit.rules.ExpectedException;
 
 import java.util.Iterator;
 

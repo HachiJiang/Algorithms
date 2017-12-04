@@ -2,6 +2,8 @@
  * Created by jianghong on 2016/11/23.
  */
 
+import com.assignment3.LineSegment;
+import com.assignment3.Point;
 import org.junit.Test;
 import org.junit.Assert;
 

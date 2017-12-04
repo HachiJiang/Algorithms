@@ -1,10 +1,12 @@
+package com.assignment3;
+
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       11/23/2016
  *  Last updated:  11/25/2016
  *
- *  Compilation:   javac FastCollinearPoints.java
- *  Execution:     java FastCollinearPoints
+ *  Compilation:   javac com.assignment3.FastCollinearPoints.java
+ *  Execution:     java com.assignment3.FastCollinearPoints
  *
  *  Examines 4 points at a time and checks whether they all lie on the same line segment
  *  returning all such line segments
@@ -23,7 +25,7 @@ public class FastCollinearPoints {
 
     /**
      * Finds all line segments containing 4 or more points
-     * @param points {Point[]}
+     * @param points {com.assignment3.Point[]}
      */
     public FastCollinearPoints(Point[] points) {
         Point[] aux = checkInput(points);
@@ -42,8 +44,8 @@ public class FastCollinearPoints {
 
     /**
      * Check input
-     * @param points {Point[]}
-     * @return {Point[]} copy of points
+     * @param points {com.assignment3.Point[]}
+     * @return {com.assignment3.Point[]} copy of points
      */
     private Point[] checkInput(Point[] points) {
         if (points == null) throw new java.lang.NullPointerException();
@@ -71,8 +73,8 @@ public class FastCollinearPoints {
 
     /**
      * Add collinear lines
-     * @param points {Point[]}
-     * @param aux {Point[]}
+     * @param points {com.assignment3.Point[]}
+     * @param aux {com.assignment3.Point[]}
      * @param originIdx {int}
      */
     private void addLines(Point[] points, Point[] aux, int originIdx) {
@@ -98,7 +100,7 @@ public class FastCollinearPoints {
     /**
      * Create line segment based on input points
      * @param points {ArrayList()}
-     * @param origin {Point}
+     * @param origin {com.assignment3.Point}
      * @param startIdx {int}
      * @param endIdx {int}
      */
@@ -120,7 +122,7 @@ public class FastCollinearPoints {
 
     /**
      * The line segments
-     * @return {LineSegment[]}
+     * @return {com.assignment3.LineSegment[]}
      */
     public LineSegment[] segments() {
         if (segs == null) {

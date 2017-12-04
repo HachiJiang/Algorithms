@@ -1,5 +1,7 @@
+import com.assignment3.BruteCollinearPoints;
+import com.assignment3.FastCollinearPoints;
+import com.assignment3.Point;
 import edu.princeton.cs.algs4.In;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 

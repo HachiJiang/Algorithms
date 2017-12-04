@@ -2,6 +2,7 @@
  * Created by jianghong on 2016/11/17.
  */
 
+import com.assignment2.Deque;
 import org.junit.Test;
 import org.junit.Assert;
 

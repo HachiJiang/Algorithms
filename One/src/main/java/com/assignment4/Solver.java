@@ -1,10 +1,12 @@
+package com.assignment4;
+
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       12/4/2016
  *  Last updated:  12/7/2016
  *
- *  Compilation:   javac Solver.java
- *  Execution:     java Solver
+ *  Compilation:   javac com.assignment4.Solver.java
+ *  Execution:     java com.assignment4.Solver
  *
  *  Find a solution to the initial board (using the A* algorithm)
  *
@@ -19,7 +21,7 @@ public class Solver {
 
     /**
      * Find a solution to the initial board (using the A* algorithm)
-     * @param initial {Board}
+     * @param initial {com.assignment4.Board}
      */
     public Solver(Board initial) {
         if (initial == null) throw new java.lang.NullPointerException();
@@ -109,7 +111,7 @@ public class Solver {
 
     /**
      * Sequence of boards in a shortest solution; null if unsolvable
-     * @return {Iterable<Board>}
+     * @return {Iterable<com.assignment4.Board>}
      */
     public Iterable<Board> solution() {
         if (goal == null) return null;

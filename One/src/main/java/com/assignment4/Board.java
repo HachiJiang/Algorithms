@@ -1,17 +1,19 @@
+package com.assignment4;
+
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       12/4/2016
  *  Last updated:  12/6/2016
  *
- *  Compilation:   javac Board.java
- *  Execution:     java Board
+ *  Compilation:   javac com.assignment4.Board.java
+ *  Execution:     java com.assignment4.Board
  *
  *  A board from an n-by-n array of blocks
  *  Corner cases:
  *  You may assume that the constructor receives an n-by-n array containing the n2 integers between 0 and n2 − 1,
  *  where 0 represents the blank square.
  *  Performance requirements:
- *  Your implementation should support all Board methods in time proportional to n2 (or better) in the worst case.
+ *  Your implementation should support all com.assignment4.Board methods in time proportional to n2 (or better) in the worst case.
  *
  *
  *----------------------------------------------------------------*/
@@ -72,7 +74,7 @@ public class Board {
      * @param blank {int} position of blank block
      * @param pos1 {int} position to exchange
      * @param pos2 {int} position to exchange
-     * @return {Board}
+     * @return {com.assignment4.Board}
      */
     private Board boardCopy(int blank, int pos1, int pos2) {
         int[] copy = tilesCopy(tiles);
@@ -98,7 +100,7 @@ public class Board {
     }
 
     /**
-     * Board dimension n
+     * com.assignment4.Board dimension n
      * @return {int}
      */
     public int dimension() {
@@ -242,7 +244,7 @@ public class Board {
 
     /**
      * All neighboring boards
-     * @return {Iterable<Board>}
+     * @return {Iterable<com.assignment4.Board>}
      */
     public Iterable<Board> neighbors() {
         Stack<Board> st = new Stack<Board>();
@@ -257,7 +259,7 @@ public class Board {
 
     /**
      * Add neighbor board
-     * @param st {Stack<Board>}
+     * @param st {Stack<com.assignment4.Board>}
      * @param pos {int}
      */
     private void addNeighbor(Stack<Board> st, int pos) {

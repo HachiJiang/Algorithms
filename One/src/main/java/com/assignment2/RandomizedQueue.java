@@ -1,10 +1,12 @@
+package com.assignment2;
+
 /*----------------------------------------------------------------
  *  Author:        Jiang Hong
  *  Written:       11/17/2016
  *  Last updated:  11/17/2016
  *
- *  Compilation:   javac RandomizedQueue.java
- *  Execution:     java RandomizedQueue
+ *  Compilation:   javac com.assignment2.RandomizedQueue.java
+ *  Execution:     java com.assignment2.RandomizedQueue
  *
  *  Model a randomized queue
  *

@@ -2,6 +2,7 @@
  * Created by jianghong on 2016/12/4.
  */
 
+import com.assignment4.Board;
 import org.junit.Test;
 import org.junit.Assert;
 

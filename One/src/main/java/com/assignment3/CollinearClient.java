@@ -1,3 +1,5 @@
+package com.assignment3;
+
 /**
  * Created by jianghong on 2016/11/23.
  */
@@ -31,7 +33,7 @@ public class CollinearClient {
 
         Stopwatch sw = new Stopwatch();
         // print and draw the line segments
-        //BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        //com.assignment3.BruteCollinearPoints collinear = new com.assignment3.BruteCollinearPoints(points);
         FastCollinearPoints collinear = new FastCollinearPoints(points);
         StdOut.println("Total running time = " + sw.elapsedTime() + "s");
 

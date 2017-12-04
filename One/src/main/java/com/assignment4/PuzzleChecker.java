@@ -1,13 +1,15 @@
+package com.assignment4;
+
 /******************************************************************************
- *  Compilation:  javac PuzzleChecker.java
- *  Execution:    java PuzzleChecker filename1.txt filename2.txt ...
- *  Dependencies: Board.java Solver.java
+ *  Compilation:  javac com.assignment4.PuzzleChecker.java
+ *  Execution:    java com.assignment4.PuzzleChecker filename1.txt filename2.txt ...
+ *  Dependencies: com.assignment4.Board.java com.assignment4.Solver.java
  *
  *  This program creates an initial board from each filename specified
  *  on the command line and finds the minimum number of moves to
  *  reach the goal state.
  *
- *  % java PuzzleChecker puzzle*.txt
+ *  % java com.assignment4.PuzzleChecker puzzle*.txt
  *  puzzle00.txt: 0
  *  puzzle01.txt: 1
  *  puzzle02.txt: 2
@@ -25,6 +27,8 @@
  *
  ******************************************************************************/
 
+import com.assignment4.Board;
+import com.assignment4.Solver;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Stopwatch;
@@ -62,8 +66,8 @@ public class PuzzleChecker {
                     StdOut.println(board);
             }
         }
-//        StdOut.println("Total running insert = " + Solver.countIns);
-//        StdOut.println("Total running del = " + Solver.countDel);
+//        StdOut.println("Total running insert = " + com.assignment4.Solver.countIns);
+//        StdOut.println("Total running del = " + com.assignment4.Solver.countDel);
         StdOut.println("Total running time = " + sw.elapsedTime() + "s");
     }
 }
